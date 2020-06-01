@@ -34,11 +34,15 @@ public class FireCtrl : MonoBehaviour
     // 오디오 클립을 저장할 변수
     public PlayerSfx playerSfx;
 
+    //Shake 클래스 저장할 변수
+    private Shake shake;
+
     void Start()
     {
         muzzleFlash = firePos.GetComponentInChildren<ParticleSystem>();
         // AudioSource 컴포넌트 추출
         _audio = GetComponent<AudioSource>();
+        shake = GameObject.Find("CameraRig").GetComponent<Shake>();
     }
 
     // Update is called once per frame
@@ -52,6 +56,8 @@ public class FireCtrl : MonoBehaviour
 
     void Fire()
     {
+        //셰이크 효과 연출
+        StartCoroutine(shake.ShakeCamera());
         Instantiate(bullet, firePos.position, firePos.rotation);
         cartridge.Play();
         muzzleFlash.Play();

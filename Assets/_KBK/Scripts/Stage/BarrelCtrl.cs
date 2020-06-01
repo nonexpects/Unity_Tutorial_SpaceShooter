@@ -25,6 +25,9 @@ public class BarrelCtrl : MonoBehaviour
     // 폭발음 오디오 클립
     public AudioClip expSfx;
 
+    //Shake 클래스 저장할 변수
+    private Shake shake;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +39,7 @@ public class BarrelCtrl : MonoBehaviour
         _renderer.material.mainTexture = textures[Random.Range(0, textures.Length)];
 
         _audio = GetComponent<AudioSource>();
+        shake = GameObject.Find("CameraRig").GetComponent<Shake>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -68,6 +72,9 @@ public class BarrelCtrl : MonoBehaviour
         meshFilter.sharedMesh = meshes[idx];
 
         _audio.PlayOneShot(expSfx, 1f);
+
+        //셰이크 효과 연출
+        StartCoroutine(shake.ShakeCamera(0.1f,0.2f , 0.5f));
     }
 
     void IndirectDamage(Vector3 pos)
