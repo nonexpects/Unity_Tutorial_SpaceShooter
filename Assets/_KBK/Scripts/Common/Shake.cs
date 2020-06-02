@@ -23,7 +23,8 @@ public class Shake : MonoBehaviour
         float magnitudeRot = 0.1f)
     {
         //지나간 시간 누적할 변수
-        float passTime = 0f;
+        float passTime = 0.0f;
+
         while(passTime < duration)
         {
             //불규칙한 위치 산출
@@ -34,7 +35,7 @@ public class Shake : MonoBehaviour
             if(shakeRotate)
             {
                 //불규칙한 회전값을 펄린 노이즈 함수를 이용해 추출
-                Vector3 shakeRot = new Vector3(0, 0, Mathf.PerlinNoise(Time.time * magnitudeRot, 0f));
+                Vector3 shakeRot = new Vector3(0, Mathf.PerlinNoise(Time.time * magnitudeRot, 0f), 0);
 
                 //카메라 회전값 변경
                 shakeCamera.localRotation = Quaternion.Euler(shakeRot);

@@ -23,7 +23,8 @@ public class EnemyDamage : MonoBehaviour
             showBloodEffect(collision);
             Destroy(collision.gameObject);
             hp -= collision.gameObject.GetComponent<BulletCtrl>().damage;
-            if(hp <= 0f)
+            //hp--;
+            if (hp <= 0f)
             {
                 GetComponent<EnemyAI>().state = EnemyAI.State.DIE;
             }

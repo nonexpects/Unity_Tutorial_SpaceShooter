@@ -57,7 +57,7 @@ public class FireCtrl : MonoBehaviour
     void Fire()
     {
         //셰이크 효과 연출
-        StartCoroutine(shake.ShakeCamera());
+        StartCoroutine(shake.ShakeCamera(0.1f, 0.2f, 0.5f));
         Instantiate(bullet, firePos.position, firePos.rotation);
         cartridge.Play();
         muzzleFlash.Play();

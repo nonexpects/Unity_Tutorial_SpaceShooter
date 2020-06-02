@@ -36,6 +36,7 @@ public class EnemyAI : MonoBehaviour
     private readonly int hashDieIdx = Animator.StringToHash("DieIdx");
     private readonly int hashOffset = Animator.StringToHash("Offset");
     private readonly int hashWalkSpeed = Animator.StringToHash("WalkSpeed");
+    private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
 
     private void Awake()
     {
@@ -64,6 +65,22 @@ public class EnemyAI : MonoBehaviour
         //CheckState 코루틴 함수 실행
         StartCoroutine(CheckState());
         StartCoroutine(Action());
+
+        Damage.OnPlayerDie += this.OnPlayerDie;
+    }
+
+    private void OnDisable()
+    {
+        Damage.OnPlayerDie -= this.OnPlayerDie; 
+    }
+
+    public void OnPlayerDie()
+    {
+        moveAgent.Stop();
+        enemyFire.isFire = false;
+        StopAllCoroutines();
+
+        animator.SetTrigger(hashPlayerDie);
     }
 
     IEnumerator Action()

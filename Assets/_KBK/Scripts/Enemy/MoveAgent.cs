@@ -81,6 +81,9 @@ public class MoveAgent : MonoBehaviour
             group.GetComponentsInChildren<Transform>(wayPoints);
             //배열의 첫번째 항목 삭제
             wayPoints.RemoveAt(0);
+
+            //첫번째로 이동할 위치 불규칙하게 추출
+            nextIdx = Random.Range(0, wayPoints.Count);
         }
 
         MoveWayPoint();
@@ -126,7 +129,8 @@ public class MoveAgent : MonoBehaviour
             && agent.remainingDistance <= 0.5f)
         {
             // 다음 목적지의 배열 첨자 계산
-            nextIdx = ++nextIdx % wayPoints.Count;
+            //nextIdx = ++nextIdx % wayPoints.Count;
+            nextIdx = Random.Range(0, wayPoints.Count);
             MoveWayPoint();
         }
     }
