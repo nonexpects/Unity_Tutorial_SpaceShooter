@@ -108,6 +108,8 @@ public class EnemyAI : MonoBehaviour
                         enemyFire.isFire = true;
                     break;
                 case State.DIE:
+                    //죽은 후에 GameManager의 enemyCount에 포함되지 않도록 태그 변경
+                    this.gameObject.tag = "Untagged";
                     isDie = true;
                     enemyFire.isFire = false;
                     moveAgent.Stop();
