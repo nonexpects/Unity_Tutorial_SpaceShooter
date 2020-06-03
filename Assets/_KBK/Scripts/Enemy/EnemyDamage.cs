@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,6 +59,10 @@ public class EnemyDamage : MonoBehaviour
             {
                 GetComponent<EnemyAI>().state = EnemyAI.State.DIE;
                 hpBarImage.GetComponentsInParent<Image>()[1].color = Color.clear;
+                //적캐릭터 사망 횟수 누적시키는 함수 호출
+                GameManager.instance.IncKillCount();
+                //Capsule Collider컴포넌트 비활성화
+                GetComponent<CapsuleCollider>().enabled = false;
             }
         }
     }

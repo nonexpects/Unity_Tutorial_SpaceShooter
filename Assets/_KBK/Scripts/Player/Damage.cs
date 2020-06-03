@@ -26,6 +26,8 @@ public class Damage : MonoBehaviour
 
     void Start()
     {
+        //불러온 데이터 값을 hp에 적용
+        initHp = GameManager.instance.gameData.hp;
         currHp = initHp;
 
         //생명 게이지의 초기 색상 설정

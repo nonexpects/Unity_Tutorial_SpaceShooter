@@ -16,6 +16,9 @@ public class BulletCtrl : MonoBehaviour
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
         trail = GetComponent<TrailRenderer>();
+
+        //불러온 데이터 값 damage에 적용
+        damage = GameManager.instance.gameData.damage;
     }
 
     private void OnEnable()
