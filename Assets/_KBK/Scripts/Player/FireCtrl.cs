@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 //총알 발사와 재장전 오디오 클립을 저장할 구조체
 [System.Serializable]
@@ -54,6 +54,11 @@ public class FireCtrl : MonoBehaviour
     //재장전 여부 판단할 변수
     public bool isReloading = false;
 
+    //변경할 무기 이미지
+    public Sprite[] weaponIcons;
+    //교체할 무기 이미지 UI
+    public Image weaponImage;
+
     void Start()
     {
         muzzleFlash = firePos.GetComponentInChildren<ParticleSystem>();
@@ -65,6 +70,7 @@ public class FireCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if(!isReloading && Input.GetMouseButtonDown(0))
         {
             --remainingBullet;
@@ -81,7 +87,15 @@ public class FireCtrl : MonoBehaviour
     {
         //셰이크 효과 연출
         StartCoroutine(shake.ShakeCamera(0.1f, 0.2f, 0.5f));
-        Instantiate(bullet, firePos.position, firePos.rotation);
+        //Instantiate(bullet, firePos.position, firePos.rotation);
+
+        var _bullet = GameManager.instance.GetBullet();
+        if(_bullet != null)
+        {
+            _bullet.transform.position = firePos.position;
+            _bullet.transform.rotation = firePos.rotation;
+            _bullet.SetActive(true);
+        }
         cartridge.Play();
         muzzleFlash.Play();
         // 사운드 발생
@@ -120,5 +134,11 @@ public class FireCtrl : MonoBehaviour
         var _sfx = playerSfx.fire[(int)currWeapon];
         // 사운드 발생
         _audio.PlayOneShot(_sfx, 1f);
+    }
+
+    public void OnChangeWeapon()
+    {
+        currWeapon = (WeaponType)((int)++currWeapon % 2);
+        weaponImage.sprite = weaponIcons[(int)currWeapon];
     }
 }

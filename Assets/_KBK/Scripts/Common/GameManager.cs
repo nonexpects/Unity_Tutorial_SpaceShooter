@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     //싱글턴에 접근하기 위한 Static 변수 선언
     public static GameManager instance = null;
 
+    private bool isPaused;
+
     [Header("Object Pool")]
     //생성할 총알 프리팹
     public GameObject bulletPrefab;
@@ -39,35 +41,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         //오브젝트 풀링 생성함수 호출
         CreatePooing();
-    }
-
-    public GameObject GetBullet()
-    {
-        for (int i = 0; i < bulletPool.Count; i++)
-        {
-            if (bulletPool[i].activeSelf == false)
-            {
-                return bulletPool[i];
-            }
-        }
-        return null;
-    }
-
-    private void CreatePooing()
-    {
-        //총알 생성해 차일드화할 페어런트 게임오브젝트 생성
-        GameObject objectPools = new GameObject("ObjectPools");
-
-        //풀링 개수만큼 미리 총알 생ㅇ성
-        for (int i = 0; i < maxPool; i++)
-        {
-            var obj = Instantiate<GameObject>(bulletPrefab, objectPools.transform);
-            obj.name = "Bullet_" + i.ToString("00");
-            //비활성화
-            obj.SetActive(false);
-            //리스트에 생성한 총알 추가 
-            bulletPool.Add(obj);
-        }
     }
 
     void Start()
@@ -102,4 +75,51 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public GameObject GetBullet()
+    {
+        for (int i = 0; i < bulletPool.Count; i++)
+        {
+            if (bulletPool[i].activeSelf == false)
+            {
+                return bulletPool[i];
+            }
+        }
+        return null;
+    }
+
+    private void CreatePooing()
+    {
+        //총알 생성해 차일드화할 페어런트 게임오브젝트 생성
+        GameObject objectPools = new GameObject("ObjectPools");
+
+        //풀링 개수만큼 미리 총알 생ㅇ성
+        for (int i = 0; i < maxPool; i++)
+        {
+            var obj = Instantiate<GameObject>(bulletPrefab, objectPools.transform);
+            obj.name = "Bullet_" + i.ToString("00");
+            //비활성화
+            obj.SetActive(false);
+            //리스트에 생성한 총알 추가 
+            bulletPool.Add(obj);
+        }
+    }
+
+    public void OnPauseClick()
+    {
+        //일시정지값 토글
+        isPaused = !isPaused;
+        //Time Scale이 0이면 정지, 1이면 정상속도
+        Time.timeScale = (isPaused) ? 0f : 1f;
+        //주인공 객체 추출
+        var playerObj = GameObject.FindGameObjectWithTag("PLAYER");
+        //주인공 캐릭터에 추가된 모든 스크립트 추출
+        var scripts = playerObj.GetComponents<MonoBehaviour>();
+        //주인공 캐릭터의 모든 스크립트 활성화/비활성화
+        foreach(var script in scripts)
+        {
+            script.enabled = !isPaused;
+        }
+    }
+
 }
