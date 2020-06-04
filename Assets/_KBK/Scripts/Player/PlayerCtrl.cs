@@ -31,6 +31,16 @@ public class PlayerCtrl : MonoBehaviour
     [HideInInspector] // or [System.Nonserialized] 사용
     public Animation anim;
 
+    private void OnEnable()
+    {
+        GameManager.OnItemChange += UpdateSetup;
+    }
+
+    void UpdateSetup()
+    {
+        moveSpeed = GameManager.instance.gameData.speed;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
