@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public void OnClickStartBtn(RectTransform rt)
     {
-        Debug.Log("Click Button" + rt.localScale.x.ToString());
+        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Play", LoadSceneMode.Additive);
     }
 }
