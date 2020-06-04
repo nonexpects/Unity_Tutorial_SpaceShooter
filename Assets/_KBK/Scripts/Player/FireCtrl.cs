@@ -59,18 +59,71 @@ public class FireCtrl : MonoBehaviour
     //교체할 무기 이미지 UI
     public Image weaponImage;
 
+    //적캐릭터 레이어값 저장 변수
+    private int enemyLayer;
+    //장애물의 레이어 값 저장할 변수
+    private int obstacleLayer;
+    //레이어 마스크의 비트연산 위한 변수
+    private int layerMask;
+
+    //자동 발사 여부 판단 변수
+    private bool isFire = false;
+    //다음 발사 시간 저장 변수
+    private float nextFire;
+    //총알 발사 간격
+    public float fireRate = 0.1f;
+
     void Start()
     {
         muzzleFlash = firePos.GetComponentInChildren<ParticleSystem>();
         // AudioSource 컴포넌트 추출
         _audio = GetComponent<AudioSource>();
         shake = GameObject.Find("CameraRig").GetComponent<Shake>();
+
+        //적 캐릭터 레이어 값 추출
+        enemyLayer = LayerMask.NameToLayer("ENEMY");
+        //장애물 레이어 값 추출
+        obstacleLayer = LayerMask.NameToLayer("OBSTACLE");
+        //레이어 마스크의 비트연산(OR연산)
+        layerMask = 1 << obstacleLayer | 1 << enemyLayer;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(firePos.position, firePos.forward * 20f, Color.green);
+
         if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        //레이캐스트에 검출된 객체의 정보 저장 변수
+        RaycastHit hit;
+
+        //레이캐스트 생성해 적 캐릭터 검출
+        if (Physics.Raycast(firePos.position, firePos.forward, out hit, 20f, 1 << enemyLayer))
+        {
+            isFire = (hit.collider.CompareTag("ENEMY"));
+        }
+        else
+            isFire = false;
+
+        //레이캐스트에 적 캐릭터 닿았을 때 자동 발사
+        if(!isReloading && isFire)
+        {
+            if(Time.time > nextFire)
+            {
+                //총알 수 하나 감소
+                --remainingBullet;
+                Fire();
+
+                //남은 총알 없는 경우 재장전 코루틴 호출
+                if(remainingBullet == 0)
+                {
+                    StartCoroutine(Reloading());
+                }
+                //다음 총알 발사시간 계산
+                nextFire = Time.time + fireRate;
+            }
+        }
         if(!isReloading && Input.GetMouseButtonDown(0))
         {
             --remainingBullet;

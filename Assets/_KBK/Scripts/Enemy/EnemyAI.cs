@@ -28,6 +28,8 @@ public class EnemyAI : MonoBehaviour
     //이동 제어하는 MoveAgent 클래스 저장할 변수
     private MoveAgent moveAgent;
     private EnemyFire enemyFire;
+    //시야각 및 추적반경 제어하는 EnemyFOV 클래스 저장 변수
+    private EnemyFOV enemyFOV;
 
     //애니메이션 컨트롤러에 정의한 파라미터의 해시값을 미리 추출
     private readonly int hashMove = Animator.StringToHash("IsMove");
@@ -51,6 +53,7 @@ public class EnemyAI : MonoBehaviour
         animator = GetComponent<Animator>();
         moveAgent = GetComponent<MoveAgent>();
         enemyFire = GetComponent<EnemyFire>();
+        enemyFOV = GetComponent<EnemyFOV>();
 
         //코루틴 지연시간 생성
         ws = new WaitForSeconds(0.3f);
@@ -126,15 +129,20 @@ public class EnemyAI : MonoBehaviour
     {
         while(!isDie)
         {
+            //오브젝트 풀에 생성시 다른 스크립트 초기화 위해 대기
+            yield return new WaitForSeconds(1f);
             if (state == State.DIE) yield break;
 
             float dist = Vector3.Distance(playerTr.position, enemyTr.position);
 
             if (dist <= attackDist)
             {
-                state = State.ATTACK;
+                if(enemyFOV.isViewPlayer())
+                    state = State.ATTACK;
+                else
+                    state = State.TRACE;
             }
-            else if (dist <= traceDist)
+            else if (enemyFOV.isTracePlayer())
             {
                 state = State.TRACE;
             }
@@ -142,6 +150,9 @@ public class EnemyAI : MonoBehaviour
             {
                 state = State.PATROL;
             }
+            
+            //.3초동안 대기하는 동안 제어권 양보
+
             yield return ws;
         }
     }

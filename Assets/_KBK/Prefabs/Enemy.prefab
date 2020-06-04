@@ -17,7 +17,8 @@ GameObject:
   - component: {fileID: 8757760409215234810}
   - component: {fileID: 8757760409215234809}
   - component: {fileID: 8757760409215234812}
-  m_Layer: 0
+  - component: {fileID: 3476944886886465186}
+  m_Layer: 14
   m_Name: Enemy
   m_TagString: ENEMY
   m_Icon: {fileID: 0}
@@ -268,6 +269,20 @@ MonoBehaviour:
   hpBarPrefab: {fileID: 5198358743660573630, guid: 9babaf3e4f71e6b46b99346169765c7c,
     type: 3}
   hpBarOffset: {x: 0, y: 2.2, z: 0}
+--- !u!114 &3476944886886465186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8757760409443056898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cf8f0e70a063f845b644910bdf0b806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewRange: 15
+  viewAngle: 120
 --- !u!1 &8757760409443056996
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,7 +293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8757760409442885956}
   - component: {fileID: 8757760409429454944}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: mutant_meshLod1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +375,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8757760409442885962}
   - component: {fileID: 8757760409429454946}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: mutant_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -442,7 +457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8757760409442885974}
   - component: {fileID: 8757760409429454950}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: mutant_meshLod2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -523,7 +538,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8757760409442885980}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rweaponholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -556,7 +571,7 @@ GameObject:
   - component: {fileID: 8757760409791313211}
   - component: {fileID: 8757760409791313209}
   - component: {fileID: 8757760409791313210}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8757760410953901882}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FirePos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -665,6 +680,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 03cd26eddfc134a6dbc4d40f15965660, type: 3}
       propertyPath: m_Name
       value: w_rifle02
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 03cd26eddfc134a6dbc4d40f15965660, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 03cd26eddfc134a6dbc4d40f15965660, type: 3}
       propertyPath: m_LocalPosition.x
