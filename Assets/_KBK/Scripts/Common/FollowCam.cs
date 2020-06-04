@@ -14,7 +14,7 @@ public class FollowCam : MonoBehaviour
     [Header("Wall Obstacles Setting")]
 
     public float heightAboveWall = 7f;
-    public float colliderRadius = 1f;
+    public float colliderRadius = 1.8f;
     public float overDamping = 5f;//이동속도 계수
     private float originHeight; //최초높이 보관 변수
 
@@ -30,6 +30,9 @@ public class FollowCam : MonoBehaviour
     void Start()
     {
         tr = GetComponent<Transform>();
+
+        //최초 카메라 높이 저장
+        originHeight = height;
     }
 
     private void Update()
@@ -57,7 +60,7 @@ public class FollowCam : MonoBehaviour
         if(Physics.Raycast(tr.position, castDir, out hit , Mathf.Infinity))
         {
             //주인공을 레이캐스트에 맞지 않았을 경우
-            if(!hit.collider.CompareTag("PLAYER"))
+            if(!hit.collider.CompareTag("Player"))
             {
                 //보간 이용해서 카메라의 높이를 부드럽게 상승
                 height = Mathf.Lerp(height, heightAboveWall, Time.deltaTime * overDamping);

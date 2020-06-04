@@ -19,7 +19,7 @@ public class EnemyFOV : MonoBehaviour
     {
         //컴포넌트 추출
         enemyTr = GetComponent<Transform>();
-        playerTr = GameObject.FindGameObjectWithTag("PLAYER").transform;
+        playerTr = GameObject.FindGameObjectWithTag("Player").transform;
 
         //레이어 마스크값 계산
         playerLayer = LayerMask.NameToLayer("PLAYER");
@@ -70,7 +70,7 @@ public class EnemyFOV : MonoBehaviour
         //적캐릭터 시야각에 들어왔는지 판단
         if (Physics.Raycast(enemyTr.position, dir, out hit, viewRange, layerMask))
         {
-            isView = (hit.collider.CompareTag("PLAYER"));
+            isView = (hit.collider.CompareTag("Player"));
         }
         return isView;
 
